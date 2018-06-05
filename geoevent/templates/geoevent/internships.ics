@@ -1,0 +1,98 @@
+BEGIN:VCALENDAR
+SUMMARY:Internship Announcements
+BEGIN:VEVENT
+SUMMARY:CaMLA summer internship program
+DTSTAMP;VALUE=DATE-TIME:20151102T184854Z
+UID:http://linguistlist.org/issues/26/26-4867.html
+DESCRIPTION:Cambridge Michigan Language Assessments (CaMLA) is now accepti
+ ng applications for its 2016 summer internship program. Interns will be in
+ volved in activities relating to the design and construction of language a
+ ssessments. These may include item writing and review\, quality assurance 
+ activities\, and test development projects. Interns will also have the opp
+ ortunity to contribute to a variety of test review and research activities
+ . These activities may include research design\, data collection and analy
+ sis\, and the documentation of results.
+DUE;TZID=US/Eastern;VALUE=DATE-TIME:20160129T000000
+GEO:42.2808256;-83.74303780000002
+LOCATION:Michigan\, USA
+URL:http://linguistlist.org/issues/26/26-4867.html
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Second Annual Grammar Bootcamp: Yale University
+DTSTART;TZID=US/Eastern;VALUE=DATE-TIME:20160705T000000
+DTEND;TZID=US/Eastern;VALUE=DATE-TIME:20160729T000000
+DTSTAMP;VALUE=DATE-TIME:20151124T204914Z
+UID:http://linguistlist.org/issues/26/26-5266.html
+DESCRIPTION:I will be holding a summer 'grammar boot camp' from July 5 to 
+ July 29\, 2016. The idea is to have up to four advanced undergraduate stud
+ ents work intensively on existing high-quality archival field notes and re
+ cordings with the aim of producing a publishable sketch grammar. Students 
+ will receive a stipend and travel expenses to come to Yale. This follows f
+ rom a very successful first bootcamp in 2015.\n\nThe materials to be worke
+ d on will be from an Australian Aboriginal language from Western Australia
+  and will include both print materials and audio files. It is probable tha
+ t the 'print' materials will already be digitized and in Toolbox.\n\nStude
+ nts will meet once a day as a group with me to discuss analyses and writin
+ g. They will spend the rest of the time working with the materials in the 
+ Linguistics department. They will receive regular detailed feedback on the
+  analysis and writing. Familiarity with Australian languages is not requir
+ ed but I would expect that successful applicants would do some reading of 
+ grammars of related languages prior to the start of the boot camp. \n\nApp
+ lications for the boot camp are now open. The deadline for applications is
+  January 22\, 2016\, and applicants will be notified of the result in mid-
+ February. \n\nTo apply\, please send the following materials electronicall
+ y:\n\n- a letter of application\, describing your experience in linguistic
+ s\, including research experience\, your future plans\, and why you'd like
+  to join the boot camp. \n- a writing sample\, such as a linguistics term 
+ paper\n- course transcript (this can be an unofficial transcript)\n\nPleas
+ e send materials as file attachments to bootcamp@pamanyungan.net\, cc'ed t
+ o claire.bowern@yale.edu. Applications will be acknowledged within 2 days 
+ - if you don't get an acknowledgment\, please let me know.\n\nPlease also 
+ arrange for one or two letters of recommendation/support from faculty to b
+ e sent to the same email addresses\, also by January 22.\n\nStudents will 
+ need to show some evidence of prior research experience (e.g. through an R
+ A-ship or by having a senior thesis in progress) and some familiarity with
+  language documentation procedures (e.g. through having taken a field meth
+ ods class or equivalent\, such as having attended CoLang or a LSA Institut
+ e class). Applicants will need to show attention to detail and ability to 
+ focus on a project for a sustained period. Students will need to be able t
+ o travel to New Haven for the entire period of the boot camp and should ex
+ pect to work solely on this project during that time\, including some even
+ ings and weekends.
+DUE;TZID=US/Eastern;VALUE=DATE-TIME:20160122T000000
+GEO:41.308274;-72.92788350000001
+LOCATION:Connecticut\, USA
+URL:http://linguistlist.org/issues/26/26-5266.html
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:A summer internship program at CaMLA\, working on language assessm
+ ent develoment projects
+DTSTAMP;VALUE=DATE-TIME:20160104T185050Z
+UID:http://linguistlist.org/issues/27/27-55.html
+DESCRIPTION:Intern will work on a number of projects related to test devel
+ opment\, including: item writing and review\, and quality assurance activi
+ ties. Interns may also work on research activities\, including: research d
+ esign\, data collection and analysis\, and documentation of results.
+DUE;TZID=US/Eastern;VALUE=DATE-TIME:20160129T000000
+GEO:42.2808256;-83.74303780000002
+LOCATION:Michigan\, USA
+URL:http://linguistlist.org/issues/27/27-55.html
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Applied Linguistics Data Analysis Internship
+DTSTART;TZID=US/Eastern;VALUE=DATE-TIME:20160125T000000
+DTEND;TZID=US/Eastern;VALUE=DATE-TIME:20160506T000000
+DTSTAMP;VALUE=DATE-TIME:20151124T204944Z
+UID:http://linguistlist.org/issues/26/26-5267.html
+DESCRIPTION:Ethnic Technologies is offering an opportunity to apply morpho
+ logical and phonological principles to data analysis in a corporate settin
+ g. \n\nAs an intern\, your tasks will consist of: \n\n- classifying first 
+ and last names by ethnicity\n- seeing morphological patterns within lists 
+ of names\n- defining rules from visible patterns\n- improving the logic th
+ at incorporates name intelligence into a predictive software product
+DUE;TZID=US/Eastern;VALUE=DATE-TIME:20160113T000000
+GEO:40.8625996;-74.04791820000003
+LOCATION:New Jersey\, USA
+URL:http://linguistlist.org/issues/26/26-5267.html
+END:VEVENT
+END:VCALENDAR

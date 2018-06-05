@@ -11,7 +11,7 @@ Many more volunteers and helpers were involved over the years, here are some:
 - Julian Dietrich
 - Noah Kaufman
 
-The LINGUIST List [GeoLing] service and app is available online at:
+The LINGUIST List [GeoLing] V 1.0 service and app is available online at:
 
 [https://geoling.linguistlist.org/](https://geoling.linguistlist.org/)
 

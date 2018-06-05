@@ -1,0 +1,72 @@
+{% extends 'base/base.html' %}
+
+{% load staticfiles %}
+{% load i18n %}
+
+{% block title %} The LINGUIST List {% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <h1>How to submit an event</h1>
+        <p>GeoLing is a service operated by <a href="http://linguistlist.org/" target="_blank">The LINGUIST List</a>.
+            All <a href="http://linguistlist.org/LL/posttolinguist.cfm" target="_blank">submissions to the LINGUIST
+                List</a> that have some
+            reference to geo-coordinates, as for example conferences, summer school announcements, job postings, or
+            institution locations,
+            are displayed on GeoLing as soon as they get posted on LINGUIST.</p>
+        <p>If you have an <a href="https://en.wikipedia.org/wiki/ICalendar" target="_blank">online calendar</a> where
+            you keep local event announcements for your department, organization, or
+            research group, and if you want these events to display on GeoLing directly, contact us and we will set up
+            automatic updates for your local events using the online calendar directly. You can provide us with access
+            information to such an online calendar by sending us the readable URL that could for example point to a
+            shared <a href="https://calendar.google.com/"
+                      target="_blank">Google Calendar</a>, an online
+            calendar that you host yourself, or one that we host for you at LINGUIST List. Please <a
+                    href="http://linguistlist.org/about.cfm#contact" target="_blank">contact us</a> for details.</p>
+        <p>Adding an event with a location to GeoLing can also be achieved by sending the event information as an iCal
+            of vCal attachment to our email address at: <i>calcard</i> at <i>linguistlist.org</i>. All submissions are
+            subject to validation and approval. It is important that the iCal entries contain the full specification of
+            the address of the event in the <a href="https://en.wikipedia.org/wiki/ICalendar" target="_blank"><i>location</i>
+                field</a>. All reference times should be refering to a correct <a
+                    href="https://en.wikipedia.org/wiki/Time_zone" target="_blank">time-zone</a>. You can send such a
+            calendar entry for an event directly from <a href="https://calendar.google.com/" target="_blank">Google
+                Calendar</a>, <a href="https://en.wikipedia.org/wiki/Microsoft_Outlook" target="_blank">Microsoft
+                Outlook</a>, <a href="https://en.wikipedia.org/wiki/Calendar_(Apple)" target="_blank">Apple Calendar</a>,
+            or the common calendar apps on mobile devices.</p>
+        <p>If you want your institution, research group, or even personal office address to show on GeoLing, simply send
+            us an email with an attached <a href="https://en.wikipedia.org/wiki/VCard" target="_blank">vCard</a> to the
+            account <i>calcard</i> at <i>linguistlist.org</i>. All submitted addresses are subject to approval and
+            verification. Please make sure that you are authorized to add the address of your institution to the system.
+            You can send a vCard via email directly from <a href="https://en.wikipedia.org/wiki/Microsoft_Outlook"
+                                                            target="_blank">Microsoft Outlook</a>, <a
+                    href="https://en.wikipedia.org/wiki/Calendar_(Apple)" target="_blank">Apple Contacts</a>,
+            or the common contacts and address apps on mobile devices.
+        </p>
+
+        <h2>Adding an event using the online interface</h2>
+        <p>First, go to <a href="{% url 'geoevent:add_event' %}">Add Event page</a>. You will see the following screen.
+            If you already have account, please log in and skip to the last step (Event Form.)</p>
+        <p><img src="{% static 'geoevent/img/howto/0001.png' %}"/></p>
+        <h1>Creating an account</h1>
+        <p><img src="{% static 'geoevent/img/howto/0002.png' %}"/></p>
+        <p>After creating your account, you will see your profile page. On the top right corner, you will see your user
+            name. Click on it and a dropdown menu will appear. Click on 'Add Event'.</p>
+        <p><img src="{% static 'geoevent/img/howto/0003.png' %}"/></p>
+        <h2>Event form</h2>
+        <p>You will see a form as in the following screenshot. Please fill in the form and submit.</p>
+        <p><img src="{% static 'geoevent/img/howto/0004.png' %}"/></p>
+        {# <p>Submission was successful.</p> #}
+        {# <p><img src="{% static 'geoevent/img/howto/0005.png' %}"/></p> #}
+        <hr/>
+        <p>GeoLing has been developed and is operated by the <a href="http://linguistlist.org/people/staff.cfm" target="_blank">LINGUIST
+            List team</a> at <a href="http://www.indiana.edu/" target="_blank">Indiana University</a>: <a
+                href="http://damir.cavar.me/" target="_blank">Damir Cavar</a>, <a href="http://malgosia.cavar.me/"
+                                                                                  target="_blank">Malgosia Cavar</a>,
+            Lwin Moe, and all the <a href="http://linguistlist.org/people/staff.cfm" target="_blank">editors of LINGUIST
+                List</a>. We are grateful to all the interns and volunteers who helped us with the development and
+            documentation of GeoLing!</p>
+<p style="text-align: center;"><a href="http://linguistlist.org/" target="_blank"><img src="http://linguistlist.org/images/logos/linglist_logo_108_108_trans.png" alt="The LINGUIST List"></a></p>
+    </div>
+
+{% endblock %}

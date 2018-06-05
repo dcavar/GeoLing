@@ -1,0 +1,710 @@
+{% load staticfiles %}
+{% load i18n %}
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <title>LINGUIST List</title>
+
+        <!-- Favicons -->
+        <link rel="shortcut icon" href="{% static 'geoevent/img/favicon.ico' %}">
+        <!-- styles -->
+        <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+        <link href="{% static 'geoevent/css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
+        <link href="{% static 'geoevent/css/bootstrap-theme.min.css' %}" rel="stylesheet" media="screen">
+        <link href="{% static 'geoevent/css/style.css' %}" rel="stylesheet" media="screen">
+        <!-- fonts -->
+        <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+
+        <link rel="stylesheet" href="{% static 'geoevent/openlayers/css/ol.css' %}" type="text/css">
+
+        <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
+        <script src="{% static 'geoevent/openlayers/build/ol.js' %}"></script>
+
+        <script type="text/javascript" src="{% static 'geoevent/js/libs/jquery.min.js' %}"></script>
+
+       <style type="text/css">
+           .map {
+               position: relative;
+               margin: 0;
+               width: 100%;
+               height: 100%;
+           }
+
+           .ol-popup {
+               position: absolute;
+               background-color: white;
+               -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+               filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+               padding: 15px;
+               border-radius: 10px;
+               border: 1px solid #cccccc;
+               bottom: 12px;
+               left: -50px;
+               width: 300px;
+           }
+
+           .ol-popup:after, .ol-popup:before {
+               top: 100%;
+               border: solid transparent;
+               content: " ";
+               height: 0;
+               width: 0;
+               position: absolute;
+               pointer-events: none;
+           }
+
+           .ol-popup:after {
+               border-top-color: white;
+               border-width: 10px;
+               left: 48px;
+               margin-left: -10px;
+           }
+
+           .ol-popup:before {
+               border-top-color: #cccccc;
+               border-width: 11px;
+               left: 48px;
+               margin-left: -11px;
+           }
+
+           .ol-popup-closer {
+               text-decoration: none;
+               position: absolute;
+               top: 2px;
+               right: 8px;
+           }
+
+           .ol-popup-closer:after {
+               content: "✖";
+           }
+           ul#navigation {
+               position: fixed;
+               margin: 0px;
+               padding: 0px;
+               top: 15%;
+               left: 0px;
+               list-style: none;
+               z-index:9999;
+           }
+           ul#navigation li {
+               width: 100px;
+           }
+           ul#navigation li a {
+               display: block;
+               margin-left: -2px;
+               width: 100px;
+               height: 70px;
+               background-color:rgba(0,60,136,.5);
+               background-repeat:no-repeat;
+               background-position:center center;
+               border:1px solid #AFAFAF;
+               color: white;
+               -moz-border-radius:10px 10px 10px 10px;
+               -webkit-border-bottom-right-radius: 10px;
+               -webkit-border-top-right-radius: 10px;
+               -khtml-border-bottom-right-radius: 10px;
+               -khtml-border-top-right-radius: 10px;
+               /*opacity: 0.6;*/
+               filter:progid:DXImageTransform.Microsoft.Alpha(opacity=60);
+           }
+           ul#navigation .local a {
+               background-image: url({% static 'geoevent/img/map_icons/default.png' %});
+           }
+           ul#navigation .jobs a {
+               background-image: url({% static 'geoevent/img/map_icons/jobs.png' %});
+           }
+           ul#navigation .conf a {
+               background-image: url({% static 'geoevent/img/map_icons/karaoke.png' %});
+           }
+           ul#navigation .intern a {
+               background-image: url({% static 'geoevent/img/map_icons/play-schools.png' %});
+           }
+           ul#navigation .summers a {
+               background-image: url({% static 'geoevent/img/map_icons/vacant-land.png' %});
+           }
+           ul#navigation .language a {
+               background-image: url({% static 'geoevent/img/map_icons/community.png' %});
+           }
+           ul#navigation .contacts a {
+               background-image: url({% static 'geoevent/img/map_icons/meetups.png' %});
+           }
+
+           ul#navigation li a span{
+               font-size:12px;
+               color:white;
+               text-shadow: 0 -1px 1px #fff;
+               top: 40%;
+               left: 65px;
+               float: left;
+               width: 40px;
+               text-align: center;
+               display:inline-block;
+               position:relative;
+               -webkit-transform: rotate(-90deg);/* Safari */
+               -moz-transform: rotate(-90deg); /* Firefox */
+               -ms-transform: rotate(-90deg);/* IE */
+               -o-transform: rotate(-90deg);/* Opera */
+               filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);/* Internet Explorer */
+           }
+
+           .ol-zoomslider {
+               top: 18.75em;
+               left: auto;
+               right: 8px;
+               background-color: transparent;
+               width: 27.9375px;
+               position: absolute;
+               height: 14em;
+               /*padding: 0;
+               box-shadow: 0 0 5px rgb(255,69,0);
+               border-radius: 20px;*/
+           }
+           .ol-zoomslider:hover {
+               background-color: transparent;
+           }
+           a.ol-zoomslider-handle:hover {
+               background-color: transparent;
+           }
+           .ol-zoom-in.ol-has-tooltip:hover [role=tooltip],
+           .ol-zoom-in.ol-has-tooltip:focus [role=tooltip] {
+           }
+           .ol-zoom{
+               right: 8px;
+               top: 17.1em;
+               left: auto;
+           }
+           .ol-zoom .ol-zoom-out {
+               margin-top: 12.1em;
+           }
+           .ol-touch .ol-zoom .ol-zoom-out {
+             margin-top: 12.1em;
+           }
+
+           .homeButton {
+               display: block;
+               margin: 1px;
+               padding: 0;
+               color: #fff;
+               font-size: 1.14em;
+               font-weight: 700;
+               text-decoration: none;
+               text-align: center;
+
+               height: 1.375em;
+               width: 1.375em;
+               line-height: .4em;
+               background-color: rgba(0, 60, 136, .5);
+               border: none;
+               border-radius: 2px;
+               position: absolute;
+               z-index: 9999;
+               top: 7.5px;
+               left: 7.5px;
+           }
+           .homeButton:hover {
+               cursor:pointer;
+               background-color: rgba(0, 60, 136, .75);
+           }
+           .ol-rotate{
+               top: 2.75em;
+           }
+       </style>
+       <script type="text/javascript">
+           var map, selectControl;
+           var styleCache = {};
+           var zoom = 14; // if user location is known, zoom in
+           var isMobile = false; //initiate as false
+           // device detection
+           if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent)
+               || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0,4))) isMobile = true;
+           function init() {
+               var mercator = new ol.proj.Projection("EPSG:900913");
+               var geographic = new ol.proj.Projection("EPSG:4326");
+               var view = new ol.View({
+                   center: [0, 0],
+                   zoom: 2,
+                   minZoom: 2,
+                   maxZoom: 17
+               });
+               /**
+                * Elements that make up the popup.
+                */
+               var container = document.getElementById('popup');
+               var content = document.getElementById('popup-content');
+               var closer = document.getElementById('popup-closer');
+               /**
+                * Add a click handler to hide the popup.
+                * @return {boolean} Don't follow the href.
+                */
+               closer.onclick = function () {
+                   overlay.setPosition(undefined);
+                   closer.blur();
+                   return false;
+               };
+               /**
+                * Create an overlay to anchor the popup to the map.
+                */
+               var overlay = new ol.Overlay(/** @type {olx.OverlayOptions} */ ({
+                   element: container,
+                   autoPan: true,
+                   autoPanAnimation: {
+                       duration: 250
+                   }
+               }));
+               var local = new ol.layer.Vector({
+                   source: new ol.source.KML({
+                       extractStyles: false,
+                       projection: 'EPSG:3857',
+                       //url: '/assets/openlayers/examples/data/kml/2012_Earthquakes_Mag5.kml'
+                       url: "{% url 'events_kml' %}"
+                   }),
+                   style: localIconStyle
+               });
+               var jobs = new ol.layer.Vector({
+                   source: new ol.source.KML({
+                       extractStyles: false,
+                       projection: 'EPSG:3857',
+                       url: "{% url 'jobs_kml' %}"
+                   }),
+                   style: jobsIconStyle
+               });
+               var intern = new ol.layer.Vector({
+                   source: new ol.source.KML({
+                       extractStyles: false,
+                       projection: 'EPSG:3857',
+                       url: "{% url 'intern_kml' %}"
+                   }),
+                   style: internIconStyle
+               });
+               var summers = new ol.layer.Vector({
+                   source: new ol.source.KML({
+                       extractStyles: false,
+                       projection: 'EPSG:3857',
+                       url: "{% url 'summers_kml' %}"
+                   }),
+                   style: summersIconStyle
+               });
+               var language = new ol.layer.Vector({
+                   source: new ol.source.KML({
+                       extractStyles: false,
+                       projection: 'EPSG:3857',
+                       url: "{% url 'language_kml' %}"
+                   }),
+                   style: languageIconStyle
+               });
+               var conf = new ol.layer.Vector({
+                   source: new ol.source.KML({
+                       extractStyles: false,
+                       projection: 'EPSG:3857',
+                       url: "{% url 'conferences_kml' %}"
+                   }),
+                   style: conferencesIconStyle
+               });
+               var contacts = new ol.layer.Vector({
+                   source: new ol.source.KML({
+                       extractStyles: false,
+                       projection: 'EPSG:3857',
+                       url: "{% url 'contacts_kml' %}"
+                   }),
+                   style: contactsIconStyle
+               });
+               var eventTypes = new ol.layer.Group({
+                   layers: [local, jobs, conf, intern, summers, language, contacts],
+                   name: 'Types Group'
+               });
+
+               //home button
+               var homeButton = document.getElementById("homeButton");
+               homeButton.addEventListener("click", function (evt) {
+                   if (geolocation.getPosition()) {
+                       map.getView().setCenter(geolocation.getPosition());
+                       map.getView().setZoom(zoom);
+                   } else {
+                       alert("Sorry, you haven't shared your location with us yet.");
+                   }
+               });
+
+               //toggle events visibility on mouse click
+               var localButton = document.getElementById("local");
+               localButton.addEventListener("click", function (evt) {
+                   if (local.getVisible() == true) {
+                       local.setVisible(false);
+                       document.getElementById("local").style.backgroundColor = "rgba(136,60,0,.5)";
+                   }
+                   else {
+                       local.setVisible(true);
+                       document.getElementById("local").style.backgroundColor = "rgba(0,60,136,.5)";
+                   }
+               });
+
+               //toggle jobs visibility on mouse click
+               var jobsButton = document.getElementById("jobs");
+               jobsButton.addEventListener("click", function (evt) {
+                   if (jobs.getVisible() == true) {
+                       jobs.setVisible(false);
+                       document.getElementById("jobs").style.backgroundColor = "rgba(136,60,0,.5)";
+                   }
+                   else {
+                       jobs.setVisible(true);
+                       document.getElementById("jobs").style.backgroundColor = "rgba(0,60,136,.5)";
+                   }
+                   //alert("Nothing here yet.");
+               });
+
+               //toggle conferences visibility on mouse click
+               var confButton = document.getElementById("conf");
+               confButton.addEventListener("click", function (evt) {
+                   if (conf.getVisible() == true) {
+                       conf.setVisible(false);
+                       document.getElementById("conf").style.backgroundColor = "rgba(136,60,0,.5)";
+                   }
+                   else {
+                       conf.setVisible(true);
+                       document.getElementById("conf").style.backgroundColor = "rgba(0,60,136,.5)";
+                   }
+                   //alert("Nothing here yet.");
+               });
+
+               //toggle support visibility on mouse click
+               var internButton = document.getElementById("intern");
+               internButton.addEventListener("click", function (evt) {
+                   if (intern.getVisible() == true) {
+                       intern.setVisible(false);
+                       document.getElementById("intern").style.backgroundColor = "rgba(136,60,0,.5)";
+                   }
+                   else {
+                       intern.setVisible(true);
+                       document.getElementById("intern").style.backgroundColor = "rgba(0,60,136,.5)";
+                   }
+                   //
+                   // alert("Nothing here yet.");
+               });
+               //toggle support visibility on mouse click
+               var summersButton = document.getElementById("summers");
+               summersButton.addEventListener("click", function (evt) {
+                   if (summers.getVisible() == true) {
+                       summers.setVisible(false);
+                       document.getElementById("summers").style.backgroundColor = "rgba(136,60,0,.5)";
+                   }
+                   else {
+                       summers.setVisible(true);
+                       document.getElementById("summers").style.backgroundColor = "rgba(0,60,136,.5)";
+                   }
+                   //
+                   // alert("Nothing here yet.");
+               });
+               //toggle support visibility on mouse click
+               var languageButton = document.getElementById("language");
+               languageButton.addEventListener("click", function (evt) {
+                   if (language.getVisible() == true) {
+                       language.setVisible(false);
+                       document.getElementById("language").style.backgroundColor = "rgba(136,60,0,.5)";
+                   }
+                   else {
+                       language.setVisible(true);
+                       document.getElementById("language").style.backgroundColor = "rgba(0,60,136,.5)";
+                   }
+                   //
+                   // alert("Nothing here yet.");
+               });
+
+               //toggle calls visibility on mouse click
+               var contactsButton = document.getElementById("contacts");
+               contactsButton.addEventListener("click", function (evt) {
+                   if (contacts.getVisible() == true) {
+                       contacts.setVisible(false);
+                       document.getElementById("calls").style.backgroundColor = "rgba(136,60,0,.5)";
+                   }
+                   else {
+                       contacts.setVisible(true);
+                       document.getElementById("calls").style.backgroundColor = "rgba(0,60,136,.5)";
+                   }
+               });
+
+              /* // create a DOM Input helper for the checkbox
+               var eventsVisible = new ol.dom.Input(document.getElementById('events'));
+                 // and bind its 'checked' property to the layer's 'visible' property
+               eventsVisible.bindTo('click', events, 'visible');
+               var jobsVisible = new ol.dom.Input(document.getElementById('jobs'));
+                 // and bind its 'checked' property to the layer's 'visible' property
+               jobsVisible.bindTo('click', jobs, 'visible');*/
+
+               var osmSource = new ol.source.MapQuest({layer:'osm'});
+               var osm = new ol.layer.Tile({source: osmSource});
+
+
+               map = new ol.Map({
+                   target: "map",
+                   overlays: [overlay],
+                   layers: [osm, eventTypes],
+                   projection: [mercator],
+                   controls: [],
+
+               });
+               map.setView(view);
+
+               if(!isMobile){
+                   map.addControl(new ol.control.Zoom);
+                   map.addControl(new ol.control.ZoomSlider);
+               }
+
+               map.addControl(new ol.control.Rotate);
+               map.addInteraction(new ol.interaction.DragRotateAndZoom);
+               map.addControl(new ol.control.FullScreen);
+
+               var geolocation = new ol.Geolocation(/** @type {olx.GeolocationOptions} */ ({
+                   projection: view.getProjection(),
+                   trackingOptions: {
+                       maximumAge: 10000,
+                       enableHighAccuracy: true,
+                       timeout: 600000
+                   }
+
+               }));
+               geolocation.setTracking(true);
+
+               // handle geolocation error.
+               geolocation.on('error', function (error) {
+                   var info = document.getElementById('info');
+                   info.innerHTML = error.message;
+                   info.style.display = '';
+               });
+
+               geolocation.once('change', function (evt) {
+                   //window.console.log(geolocation.getPosition());
+                   map.getView().setCenter(geolocation.getPosition());
+                   map.getView().setZoom(zoom);
+               });
+
+               // device orientation
+               // this doesn't work yet
+               var deviceOrientation = new ol.DeviceOrientation();
+
+               // tilt the map
+               deviceOrientation.on(['change:beta', 'change:gamma'], function (event) {
+                   var center = view.getCenter();
+                   var resolution = view.getResolution();
+                   var beta = event.target.getBeta() || 0;
+                   var gamma = event.target.getGamma() || 0;
+
+                   center[0] -= resolution * gamma * 25;
+                   center[1] += resolution * beta * 25;
+
+                   view.setCenter(view.constrainCenter(center));
+                   document.getElementById('map').requestFullScreen();
+
+               });
+
+               var positionFeature = new ol.Feature({name: 'You are here!'});
+               /*positionFeature.setStyle(homeIconStyle);*/
+               positionFeature.setStyle(new ol.style.Style({
+                   image: new ol.style.Circle({
+                       radius: 6,
+                       fill: new ol.style.Fill({
+                           color: '#FF0000'
+                       }),
+                       stroke: new ol.style.Stroke({
+                           color: '#fff',
+                           width: 2
+                       })
+                   })
+               }));
+
+               positionFeature.bindTo('geometry', geolocation, 'position')
+                       .transform(function () {
+                       }, function (coordinates) {
+                           return coordinates ? new ol.geom.Point(coordinates) : null;
+                       });
+
+               var featuresOverlay = new ol.FeatureOverlay({
+                   map: map,
+                   features: [positionFeature]
+               });
+
+               var displayFeatureInfo = function (evt) {
+                   pixel = evt.pixel;
+                   coordinate = evt.coordinate;
+                   var feature = map.forEachFeatureAtPixel(pixel, function (feature, layer) {
+                       return feature;
+                   });
+                   if (feature) {
+                       content.innerHTML = feature.get('name') || ''; // get feature name or ''
+                       overlay.setPosition(coordinate);
+                   } else {
+                       overlay.setPosition(undefined);
+                       closer.blur();
+                   }
+               };
+
+               /* disable this for now
+               map.on('pointermove', function(evt) {
+                 if (evt.dragging) {
+                   overlay.setPosition(undefined);
+                   closer.blur();
+                   return;
+                 }
+                 displayFeatureInfo(evt);
+               });
+               */
+
+               map.on('click', function (evt) {
+                   displayFeatureInfo(evt);
+               });
+
+           } // end init()
+
+           //create the home icon style
+           //var homeIconStyle = new ol.style.Style({
+           //    image: new ol.style.Icon(/** @type {olx.style.IconOptions} */  ({
+           //        anchor: [0.5, 46],
+           //        anchorXUnits: 'fraction',
+           //        anchorYUnits: 'pixels',
+           //        opacity: 0.75,
+           //        src: "{% static 'geoevent/img/map_icons/residential-places.png' %}"
+           //    }))
+           //});
+
+           //create the local icon style
+           var localIconStyle = new ol.style.Style({
+               image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+                   anchor: [0.5, 46],
+                   anchorXUnits: 'fraction',
+                   anchorYUnits: 'pixels',
+                   opacity: 0.75,
+                   src: "{% static 'geoevent/img/map_icons/default.png' %}"
+               }))
+           });
+
+           //create the jobs icon style
+           var jobsIconStyle = new ol.style.Style({
+               image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+                   anchor: [0.5, 46],
+                   anchorXUnits: 'fraction',
+                   anchorYUnits: 'pixels',
+                   opacity: 0.75,
+                   src: "{% static 'geoevent/img/map_icons/jobs.png' %}"
+               }))
+           });
+
+           //create the support icon style
+           var internIconStyle = new ol.style.Style({
+               image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+                   anchor: [0.5, 46],
+                   anchorXUnits: 'fraction',
+                   anchorYUnits: 'pixels',
+                   opacity: 0.75,
+                   src: "{% static 'geoevent/img/map_icons/play-schools.png' %}"
+               }))
+           });
+
+           var languageIconStyle = new ol.style.Style({
+               image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+                   anchor: [0.5, 46],
+                   anchorXUnits: 'fraction',
+                   anchorYUnits: 'pixels',
+                   opacity: 0.75,
+                   src: "{% static 'geoevent/img/map_icons/community.png' %}"
+               }))
+           });
+
+           var summersIconStyle = new ol.style.Style({
+               image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+                   anchor: [0.5, 46],
+                   anchorXUnits: 'fraction',
+                   anchorYUnits: 'pixels',
+                   opacity: 0.75,
+                   src: "{% static 'geoevent/img/map_icons/vacant-land.png' %}"
+               }))
+           });
+
+           //create the conferences icon style
+           var conferencesIconStyle = new ol.style.Style({
+               image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+                   anchor: [0.5, 46],
+                   anchorXUnits: 'fraction',
+                   anchorYUnits: 'pixels',
+                   opacity: 0.75,
+                   src: "{% static 'geoevent/img/map_icons/karaoke.png' %}"
+               }))
+           });
+
+
+           //create the contacts icon style
+           var contactsIconStyle = new ol.style.Style({
+               image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+                   anchor: [0.5, 46],
+                   anchorXUnits: 'fraction',
+                   anchorYUnits: 'pixels',
+                   opacity: 0.75,
+                   src: "{% static 'geoevent/img/map_icons/meetups.png' %}"
+               }))
+           });
+
+           // icon style, no longer used
+           /*
+           var styleFunction = function (feature, resolution) {
+               var fill = new ol.style.Fill({
+                   color: 'rgba(255, 153, 0,0.4)'
+               });
+               var stroke = new ol.style.Stroke({
+                   color: '#ff0000',
+                   width: 1.25
+               });
+               var radius = 25;
+               var style = styleCache[radius];
+               if (!style) {
+                   styles = [
+                       new ol.style.Style({
+                           image: new ol.style.Circle({
+                               radius: radius,
+                               fill: fill,
+                               stroke: stroke,
+                               radius: 5
+                           }),
+                           fill: fill,
+                           stroke: stroke
+                       })
+                   ];
+                   styleCache[radius] = style;
+               }
+               return styles;
+           }; */
+
+           $(function () {
+               $('#navigation a').stop().animate({'marginLeft':'-75px'},1000);
+               $('#navigation > li').hover(
+                   function () {
+                       $('a', $(this)).stop().animate({'marginLeft': '-15px'}, 200);
+                   },
+                   function () {
+                       $('a', $(this)).stop().animate({'marginLeft': '-75px'}, 200);
+                   }
+               );
+           });
+       </script>
+   </head>
+   <body onload="init()">
+       <div id="map" class="map">
+           <div id="popup" class="ol-popup">
+               <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+               <div id="popup-content"></div>
+           </div>
+           <div><a class = "homeButton" id="homeButton"><img src="{% static 'geoevent/img/home.png' %}" width="21em" heigth="21em"></a></span></div>
+           <div>
+               <ul id="navigation">
+                   <li class = "local"><a id="local"><span>Local</span></a></li>
+                   <li class = "jobs"><a id="jobs"><span>Jobs</span></a></li>
+                   <li class = "conf"><a id="conf"><span>Conf</span></a></li>
+                   <li class = "intern"><a id="intern"><span>Intern</span></a></li>
+                   <li class = "summers"><a id="summers"><span>SummerS</span></a></li>
+                   <li class = "contacts"><a id="contacts"><span>Contacts</span></a></li>
+                   <li class = "language"><a id="language"><span>Language</span></a></li>
+               </ul>
+           </div>
+       </div>
+   </body>
+</html>
+

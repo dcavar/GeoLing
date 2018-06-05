@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+{% for s in events %}
+    {% if s.lat and s.lon %}
+        <Placemark>
+            <name>
+                <![CDATA[
+                    {% comment %}<p style="text-align:center"><a href="{% url 'event_details' s.id %}" target="_blank">{{ s.title }}</a></p>{% endcomment %}
+
+                    <p style="text-align:center">
+                        {% if s.url %}
+                            <a href="{{ s.url }}" target="_blank">{{ s.title }}</a>
+                        {% else %}
+                            <a href="{% url 'geoevent:event_details' s.id %}" target="_blank">{{ s.title }}</a>
+                        {% endif %}
+                    </p>
+                    {% if s.dstart or s.dend %}
+                        <p><b>Date:</b> {{ s.dstart|date:"d M Y" }} - {{ s.dend|date:"d M Y" }}</p>
+                    {% endif %}
+                    <p>{% if s.description %}<b>Description:</b>{% endif %} {{ s.description|slice:":100"|linebreaksbr }}
+                        {% if s.url %}
+                            <a href="{{ s.url }}" target="_blank">(...)</a>
+                        {% else %}
+                            <a href="{% url 'geoevent:event_details' s.id %}" target="_blank">(...)</a>
+                        {% endif %}
+                    </p>
+                ]]>
+            </name>
+
+            {% comment %}<description>{{ s.description }}</description>{% endcomment %}
+            {% comment %}<a href="{% url 'event_details' s.id %}" target="_blank">(...)</a>{% endcomment %}
+            <Point>
+                <coordinates>{{ s.lon }}, {{ s.lat }},0</coordinates>
+            </Point>
+        </Placemark>
+    {% endif %}
+{% endfor %}
+</kml>

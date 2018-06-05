@@ -1,0 +1,45 @@
+{% load staticfiles %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title> {% block title %}GEOLING{% endblock %}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- Social Media -->
+<meta property="og:image" content="http://linguistlist.org/images/lllogo-large.jpg" />
+<meta property="og:image:secure_url" content="https://linguistlist.org/images/lllogo-large.jpg" />
+<meta property="og:description" content="The LINGUIST List, International Linguistics Community Online." />
+
+<!-- Favicons -->
+<link rel="shortcut icon" href="{% static 'geoevent/img/favicon.ico' %}">
+<!-- styles -->
+<!-- Google fonts -->
+<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="{% static 'geoevent/css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
+<link rel="stylesheet" href="{% static 'geoevent/css/bootstrap-theme.min.css' %}" rel="stylesheet" media="screen">
+<link rel="stylesheet" href="{% static 'geoevent/css/style.css' %}" rel="stylesheet" media="screen">
+<link rel="stylesheet" href="{% static 'geoevent/css/bootstrap-multiselect.css' %}">
+<!-- <link rel="stylesheet" href="{% static 'geoevent/css/chosen.css' %}"> -->
+<link rel="stylesheet" type="text/css" href="{% static 'geoevent/css/jquery.datetimepicker.css' %}"/ >
+<!-- Google recaptcha v2 -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+</head>
+
+<body>
+<div id="wrap">
+    {% include 'base/_menu.html' %}
+    {% block content %}{% endblock %}
+</div>
+{% include 'base/_js.html' %}
+{%  block extra_js %}{%  endblock %}
+{% comment %}
+{% include 'base/_footer.html' %}
+{% endcomment %}
+</body>
+</html>

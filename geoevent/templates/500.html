@@ -1,0 +1,12 @@
+{% extends 'base/base.html' %}
+
+{% load i18n %}
+
+{% block title %} The LINGUIST List {% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{% trans "Sorry!" %}</h1>
+        <p> {% trans "Something went wrong. Please check again later." %} </p>
+    </div>
+{% endblock %}

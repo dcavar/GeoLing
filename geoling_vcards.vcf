@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+N:List;The LINGUIST;;;
+FN:The LINGUIST List
+ORG:Indiana University;Department of Linguistics
+EMAIL;type=INTERNET;type=WORK;type=pref:linguist@linguistlist.org
+TEL;type=WORK;type=VOICE;type=pref:+1 812 391-3602
+ADR;type=WORK;type=pref:;;111 N Bryan Ave;Bloomington;Indiana;47408-4140;United States
+BDAY:1990-12-13
+X-MOZILLA-HTML:TRUE
+X-EVOLUTION-BLOG-URL:http://blog.linguistlist.org/
+END:VCARD

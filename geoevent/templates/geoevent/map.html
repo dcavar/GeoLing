@@ -1,0 +1,480 @@
+{% load staticfiles %}
+{% load i18n %}
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>LINGUIST List GeoLing</title>
+
+    <!-- Social Media -->
+    <meta property="og:image" content="https://linguistlist.org/images/lllogo-large.jpg" />
+    <meta property="og:image:secure_url" content="https://linguistlist.org/images/lllogo-large.jpg" />
+    <meta property="og:description" content="The LINGUIST List, International Linguistics Community Online." />
+
+    <link rel="shortcut icon" href="{% static 'geoevent/img/favicon.ico' %}">
+
+    <link href='https://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="{% static 'geoevent/openlayers/css/ol.css' %}" type="text/css">
+
+    <!--script src="https://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script-->
+    <script src="{% static 'geoevent/openlayers/build/ol.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'geoevent/js/libs/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'geoevent/js/jquery.mmenu.min.all.js' %}"></script>
+    <link href="{% static 'geoevent/css/core/css/jquery.mmenu.all.css' %}" type="text/css" rel="stylesheet"/>
+    <link href="{% static 'geoevent/css/mapview.css' %}" type="text/css" rel="stylesheet"/>
+
+    <style type="text/css">
+        #my-menu {
+            position: absolute;
+        }
+
+        .map {
+            position: relative;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .ol-popup {
+            position: absolute;
+            background-color: white;
+            -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #cccccc;
+            bottom: 12px;
+            left: -50px;
+            width: 300px;
+        }
+
+        .ol-popup:after, .ol-popup:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .ol-popup:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+
+        .ol-popup:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+
+        .ol-popup-closer {
+            text-decoration: none;
+            position: absolute;
+            top: 2px;
+            right: 8px;
+        }
+
+        .ol-popup-closer:after {
+            content: "✖";
+        }
+
+        .ol-zoomslider {
+            top: 18.75em;
+            left: auto;
+            right: 8px;
+            background-color: transparent;
+            width: 27.9375px;
+            position: absolute;
+            height: 14em;
+            /*padding: 0;
+            box-shadow: 0 0 5px rgb(255,69,0);
+            border-radius: 20px;*/
+        }
+
+        .ol-zoomslider:hover {
+            background-color: transparent;
+        }
+
+        a.ol-zoomslider-handle:hover {
+            background-color: transparent;
+        }
+
+        .ol-zoom-in.ol-has-tooltip:hover [role=tooltip],
+        .ol-zoom-in.ol-has-tooltip:focus [role=tooltip] {
+        }
+
+        .ol-zoom {
+            right: 8px;
+            top: 3em;
+            left: auto;
+        }
+
+        .ol-zoom .ol-zoom-out {
+            margin-top: 0em;
+        }
+
+        .ol-touch .ol-zoom .ol-zoom-out {
+            margin-top: 0em;
+        }
+
+        .ol-rotate {
+            top: 2.75em;
+        }
+
+        #trigger {
+            padding: 5px;
+            cursor: pointer;
+            background: yellow;
+        }
+
+        .menuitem {
+            cursor: pointer;
+        }
+    </style>
+    <script type="text/javascript">
+        var map, selectControl, eventTypes;
+        var styleCache = {};
+        var zoom = 12; // if user location is known, zoom in
+        var isMobile = false; //initiate as false
+        // device detection
+        if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent)
+            || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0, 4))) isMobile = true;
+
+        var layerData = {
+            'Local Events': ['event', 'geoevent/img/map_icons/default.png'],
+            'Jobs': ['job', 'geoevent/img/map_icons/jobs.png'],
+            'Conferences': ['conference', 'geoevent/img/map_icons/karaoke.png'],
+            'Internships': ['internship', 'geoevent/img/map_icons/play-schools.png'],
+            'Summer Schools': ['summerschool', 'geoevent/img/map_icons/vacant-land.png'],
+            'Contacts': ['contact', 'geoevent/img/map_icons/meetups.png'],
+            'Languages': ['language', 'geoevent/img/map_icons/community.png']
+        };
+
+        function init() {
+            var mercator = new ol.proj.Projection("EPSG:900913");
+            var geographic = new ol.proj.Projection("EPSG:4326");
+            var view = new ol.View({
+                center: [0, 0],
+                zoom: 2,
+                minZoom: 2,
+                maxZoom: 17
+            });
+            /**
+             * Elements that make up the popup.
+             */
+            var container = document.getElementById('popup');
+            var content = document.getElementById('popup-content');
+            var closer = document.getElementById('popup-closer');
+            /**
+             * Add a click handler to hide the popup.
+             * @return {boolean} Don't follow the href.
+             */
+            closer.onclick = function () {
+                overlay.setPosition(undefined);
+                closer.blur();
+                return false;
+            };
+
+            eventTypes = new ol.layer.Group({
+                layers: [], /* local, jobs, conf, intern, summers, language, contacts], */
+                name: 'Types Group'
+            });
+
+            // eventTypes is required for makeLayers
+            // the menu is generated here, together with styles, layers and binding
+            makeLayers();
+            //$("#" + layerData["Local Events"][0] + 'Item').click();
+            /*TODO: only the last one on the layerData list get highlighted. */
+            {% for t in types %}
+                $("#{{ t }}" + 'Item').click();
+            {% endfor %}
+
+            /**
+             * Create an overlay to anchor the popup to the map.
+             */
+            var overlay = new ol.Overlay(/** @type {olx.OverlayOptions} */ ({
+                element: container,
+                autoPan: true,
+                autoPanAnimation: {
+                    duration: 250
+                }
+            }));
+
+            //home button
+            var homeButton = document.getElementById("homeButton");
+            homeButton.addEventListener("click", function (evt) {
+                if (geolocation.getPosition()) {
+                    map.getView().setCenter(geolocation.getPosition());
+                    map.getView().setZoom(zoom);
+                } else {
+                    alert("Sorry, you haven't shared your location with us yet.");
+                }
+            });
+
+            //var osmSource = new ol.source.MapQuest({layer: 'osm'});
+            var osmSource = new ol.source.OSM({layer: 'osm'});
+            var osm = new ol.layer.Tile({source: osmSource});
+
+            map = new ol.Map({
+                target: "map",
+                overlays: [overlay],
+                layers: [osm, eventTypes],
+                projection: [mercator],
+                controls: [],
+
+            });
+            map.setView(view);
+
+            if (!isMobile) {
+                map.addControl(new ol.control.Zoom);
+                // map.addControl(new ol.control.ZoomSlider);
+            }
+
+            map.addControl(new ol.control.Rotate);
+            map.addInteraction(new ol.interaction.DragRotateAndZoom);
+            map.addControl(new ol.control.FullScreen);
+
+            var geolocation = new ol.Geolocation(/** @type {olx.GeolocationOptions} */ ({
+                projection: view.getProjection(),
+                trackingOptions: {
+                    maximumAge: 10000,
+                    enableHighAccuracy: true,
+                    timeout: 600000
+                }
+
+            }));
+            geolocation.setTracking(true);
+
+            // handle geolocation error.
+            geolocation.on('error', function (error) {
+                var info = document.getElementById('info');
+                info.innerHTML = error.message;
+                info.style.display = '';
+            });
+
+            geolocation.once('change', function (evt) {
+                //window.console.log(geolocation.getPosition());
+                map.getView().setCenter(geolocation.getPosition());
+                map.getView().setZoom(zoom);
+            });
+
+            // device orientation
+            // this doesn't work yet
+            var deviceOrientation = new ol.DeviceOrientation();
+
+            // tilt the map
+            deviceOrientation.on(['change:beta', 'change:gamma'], function (event) {
+                var center = view.getCenter();
+                var resolution = view.getResolution();
+                var beta = event.target.getBeta() || 0;
+                var gamma = event.target.getGamma() || 0;
+
+                center[0] -= resolution * gamma * 25;
+                center[1] += resolution * beta * 25;
+
+                view.setCenter(view.constrainCenter(center));
+                document.getElementById('map').requestFullScreen();
+
+            });
+
+            var positionFeature = new ol.Feature({name: 'You are here!'});
+            /*positionFeature.setStyle(homeIconStyle);*/
+            positionFeature.setStyle(new ol.style.Style({
+                image: new ol.style.Circle({
+                    radius: 6,
+                    fill: new ol.style.Fill({
+                        color: '#FF0000'
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: '#fff',
+                        width: 2
+                    })
+                })
+            }));
+
+            positionFeature.bindTo('geometry', geolocation, 'position')
+                .transform(function () {
+                }, function (coordinates) {
+                    return coordinates ? new ol.geom.Point(coordinates) : null;
+                });
+
+            var featuresOverlay = new ol.FeatureOverlay({
+                map: map,
+                features: [positionFeature]
+            });
+
+            var displayFeatureInfo = function (evt) {
+                pixel = evt.pixel;
+                coordinate = evt.coordinate;
+                var feature = map.forEachFeatureAtPixel(pixel, function (feature, layer) {
+                    return feature;
+                });
+                if (feature) {
+                    content.innerHTML = feature.get('name') || ''; // get feature name or ''
+                    // if class = Language extract href for glottolog link
+                    // Label Language
+                    overlay.setPosition(coordinate);
+                } else {
+                    overlay.setPosition(undefined);
+                    closer.blur();
+                }
+            };
+
+            map.on('click', function (evt) {
+                displayFeatureInfo(evt);
+            });
+        } // end init()
+
+        function makeLayers() {
+            var locpath = "/static/";
+            for (var i in layerData) {
+                // create the elements
+                $("#menutarget").append('<li id="' +
+                    layerData[i][0] + 'Item"><a id="' +
+                    layerData[i][0] + '" class="menuitem">' +
+                    i + '</a></li>');
+
+                // create style
+                layerData[i].push(new ol.style.Style({
+                    image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+                        anchor: [0.5, 46],
+                        anchorXUnits: 'fraction',
+                        anchorYUnits: 'pixels',
+                        opacity: 0.75,
+                        src: locpath + layerData[i][1]
+                    }))
+                }));
+                // create the layer
+                layerData[i].push(new ol.layer.Vector({
+                    source: new ol.source.KML({
+                        extractStyles: false,
+                        projection: 'EPSG:3857',
+                        //url: "/" + layerData[i][0] + "/" + layerData[i][0] + ".kml"
+                        url: "/data/kml/" + layerData[i][0] + "/"
+                    }),
+                    visible: false,
+                    style: layerData[i][2]
+                }));
+                $("#" + layerData[i][0] + "Item").click(clickEvent);
+            }
+            // add the logo
+            $("#menutarget").append("<p style='text-align: center;'><a href='http://linguistlist.org/' target='_blank'><img src='https://linguistlist.org/images/logos/linglist_logo_108_108_trans.png' alt='The LINGUIST List'></a></p>");
+        }
+
+        function clickEvent() {
+            var key = $(this).text();
+            var myLayers = eventTypes.getLayers();
+            myLayers.remove(layerData[key][3]);
+            myLayers.push(layerData[key][3]);
+            eventTypes.setLayers(myLayers);
+            if (layerData[key][3].getVisible() == true) {
+                layerData[key][3].setVisible(false);
+                $("#" + layerData[key][0] + "Item").removeClass("mm-selected")
+            }
+            else {
+                layerData[key][3].setVisible(true);
+                $("#" + layerData[key][0] + "Item").addClass("mm-selected")
+            }
+        }
+
+        $(function () {
+            $('#navigation a').stop().animate({'marginLeft': '-75px'}, 1000);
+            $('#navigation > li').hover(
+                function () {
+                    $('a', $(this)).stop().animate({'marginLeft': '-15px'}, 200);
+                },
+                function () {
+                    $('a', $(this)).stop().animate({'marginLeft': '-75px'}, 200);
+                }
+            );
+        });
+
+        $(document).ready(function () {
+            init();
+            $("#my-menu").mmenu({
+                extensions: ["border-none", "theme-white"],
+                navbar: false,
+                navbars: {
+                    content: ["searchfield"],
+                    height: 2
+                }
+                // options
+            }, {
+                // configuration
+                offCanvas: {
+                    pageNodetype: "section"
+                }
+            }).on('click',
+                'a[href^="#/"]',
+                function () {
+                    alert("Thank you for clicking, but that's a demo link.");
+                    return false;
+                }
+            );
+            // activate local as default
+        });
+    </script>
+</head>
+<body> <!-- onload="init()"-->
+{#<p style="text-align: center;"><b>LINGUIST is a free resource, run by linguistics students and faculty, and supported primarily by your donations. Please support LINGUIST List during the <a href="http://funddrive.linguistlist.org">2017 Fund Drive.</a></b></p>#}
+<div id="page" class="mm-slideout mm-page">
+    <div class="header">
+        <a href="#my-menu"></a>
+        GeoLing @ LINGUIST List
+    </div>
+    <div class="content">
+        <div id="map" class="map">
+            <!--div class="main">
+            </div-->
+            <div id="popup" class="ol-popup">
+                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+
+                <div id="popup-content"></div>
+            </div>
+            <!--div>
+                <a class="homeButton" id="homeButton">
+                    <img src="{% static 'geoevent/img/home.png' %}" width="21em" heigth="21em">
+                </a>
+            </div-->
+        </div>
+    </div>
+</div>
+<nav id="my-menu">
+    <!--div -->
+        <ul id="menutarget" class="mm-listview">
+            <li><a id="homeButton" class="menuitem">Home</a></li>
+            <li><a href="{% url 'geoevent:add_event' %}" style="text-decoration: none">Submit</a></li>
+            <li><a href="{% url 'geoevent:howto' %}" style="text-decoration: none">How to Submit</a></li>
+            <li class="Divider">
+                <hr/>
+            </li>
+        </ul>
+    <!-- /div -->
+</nav>
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-50974108-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+</body>
+</html>

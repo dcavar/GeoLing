@@ -1,0 +1,73 @@
+{% extends 'base/base.html' %}
+
+{% load staticfiles %}
+{% load i18n %}
+
+{% block title %} The LINGUIST List {% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1>{{ cont.fn }}</h1>
+
+    {% if cont.x_linguistlist_progdescr %}
+        <p>Program Description: {{ cont.x_linguistlist_progdescr|linebreaksbr }}</p>
+    {% endif %}
+    {% if cont.x_linguistlist_progfinancialaid %}
+        <p>Financial Aid: {{ cont.x_linguistlist_progfinancialaid|linebreaksbr }}</p>
+    {% endif %}
+    {% if cont.urls.all.0.data %}
+        <p>Website: <a href="{{ cont.urls.all.0.data }}" target="_blank">{{ cont.urls.all.0.data }}</a></p>
+    {% endif %}
+
+    <p>
+        Address:
+    </p>
+    {% if cont.adrs.all.0.post_office_box %}
+        <p>
+            {{ cont.adrs.all.0.post_office_box }},
+        </p>
+    {% endif %}
+    {% if cont.adrs.all.0.extended_address %}
+        <p>
+            {{ cont.adrs.all.0.extended_address }},
+        </p>
+    {% endif %}
+    {% if cont.adrs.all.0.street_address %}
+        <p>
+            {{ cont.adrs.all.0.street_address }},
+        </p>
+    {% endif %}
+    {% if cont.adrs.all.0.locality %}
+        <p>
+            {{ cont.adrs.all.0.locality }},
+    {% endif %}
+    {% if cont.adrs.all.0.region %}
+            {{ cont.adrs.all.0.region }},
+        </p>
+    {% endif %}
+    {% if cont.adrs.all.0.postal_code %}
+        <p>
+            {{ cont.adrs.all.0.postal_code }},
+        </p>
+    {% endif %}
+    {% if cont.adrs.all.0.country_name %}
+        <p>
+            {{ cont.adrs.all.0.country_name }}
+        </p>
+    {% endif %}
+
+     {% for e in cont.emails.all %}
+                            <p>Email: {{ e.value }} </p>
+                        {% endfor %}
+                        {% for t in cont.tels.all %}
+                            <p>Telephone ( {% for tt in t.tel_types.all %} {% if tt.type != "WORK" %} {{ tt.type }} {% endif %} {% endfor %} ): {{ t.value }}</p>
+                        {% endfor %}
+    {% if cont.adrs.lat and cont.adrs.lon %}
+        <iframe width="300" height="170" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q={{ event.lat }},{{ event.lon }}&hl=es;z=14&amp;output=embed"></iframe><br /><small><a href="https://maps.google.com/maps?q={{ cont.adrs.lat }},{{ cont.adrs.lon }}&hl=es;z=14&amp;output=embed" style="color:#0000FF;text-align:left" target="_blank">View Larger Map</a></small>
+    {% endif %}
+
+</div>
+
+{% endblock %}

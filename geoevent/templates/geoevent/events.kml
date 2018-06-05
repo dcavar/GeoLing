@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+{% for s in events %}
+  {% if s.lat and s.lon %}
+    <Placemark>
+      <name>
+        <![CDATA[
+          <p style="text-align:center"><a href="{% url 'event_details' s.id %}" target="_blank">{{ s.name }}</a></p>
+          {% if s.date_start or s.date_end %}
+            <p><b>Date:</b> {{ s.date_start }} - {{ s.date_end }}</p>
+          {% endif %}
+          <p>{% if s.description %}<b>Description:</b>{% endif %} {{ s.description|slice:":100"|linebreaksbr }} <a href="{% url 'event_details' s.id %}" target="_blank">(...)</a></p>
+        ]]>
+      </name>
+      {% comment %}<description>{{ s.description }}</description>{% endcomment %}
+      <Point>
+        <coordinates>{{ s.lon }}, {{ s.lat }},0</coordinates>
+      </Point>
+    </Placemark>
+  {% endif %}
+{% endfor %}
+</kml>

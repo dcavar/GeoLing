@@ -1,0 +1,41 @@
+{% extends 'base/base.html' %}
+
+{% load staticfiles %}
+{% load i18n %}
+
+{% load markdown_filter %}
+
+{% block title %} The LINGUIST List {% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1>{{ event.title }}</h1>
+
+    {% if event.description %}
+        <p>{{ event.description|markdownify|safe }}</p>
+    {% endif %}
+    {% if event.url %}
+        <p><b>URL:</b> <a href="{{ event.url }}" target="_blank">{{ event.url }}</a></p>
+    {% endif %}
+
+    {% if event.dstart %}
+        <p><b>Start:</b> {{ event.dstart }}</p>
+    {% endif %}
+    {% if event.dend %}
+        <p><b>End:</b> {{ event.dend }}</p>
+    {% endif %}
+    {% if event.location %}
+        <p>
+            <b>Address:</b><br/>
+                {{ event.location|linebreaksbr }},
+        </p>
+    {% endif %}
+    {% if event.lat and event.lon %}
+        <iframe width="300" height="170" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q={{ event.lat }},{{ event.lon }}&hl=es;z=14&amp;output=embed"></iframe><br /><small><a href="https://maps.google.com/maps?q={{ event.lat }},{{ event.lon }}&hl=es;z=14&amp;output=embed" style="color:#0000FF;text-align:left" target="_blank">View Larger Map</a></small>
+    {% endif %}
+
+</div>
+
+{% endblock %}

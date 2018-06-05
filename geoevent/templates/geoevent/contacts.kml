@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+{% for s in contacts %}
+    {% for a in s.adrs.all %}
+        {% if a.lat and a.lon %}
+            <Placemark>
+                <name>
+                    <![CDATA[
+
+                        <p style="text-align:center">{{ s.n }} <p>
+                        <p> <a href="{{ s.urls.all.0.data }}" target="_blank">Website</a>
+                        <p> {% if s.x_linguistlist_progdescr %}Description: {{ s.x_linguistlist_progdescr|slice:":200"|linebreaksbr }} <a href="{% url 'geoevent:continfo' s.uid %}" target="_blank">(...)</a>{% endif %}</p>
+                        <p> {% if s.x_linguistlist_progfinancialaid %}Financial Aid Description: {{ s.x_linguistlist_progfinancialaid|slice:":200"|linebreaksbr }}<a href="{% url 'geoevent:continfo' s.uid %}" target="_blank">(...)</a>{% endif %} </p>
+                        {% for e in s.emails.all %}
+                            <p>Email: {{ e.value }} </p>
+                        {% endfor %}
+                        {% for t in s.tels.all %}
+                            <p>Telephone ( {% for tt in t.tel_types.all %} {% if tt.type != "WORK" %} {{ tt.type }} {% endif %} {% endfor %} ): {{ t.value }}</p>
+                        {% endfor %}
+
+
+                    ]]>
+                </name>
+                <Point>
+                    <coordinates>{{ a.lon }}, {{ a.lat }},0</coordinates>
+                </Point>
+            </Placemark>
+        {% endif %}
+    {% endfor %}
+{% endfor %}
+</kml>

@@ -1,0 +1,19 @@
+{% extends 'base/base.html' %}
+
+{% load staticfiles %}
+{% load i18n %}
+
+{% block title %} The LINGUIST List {% endblock %}
+
+{% block content %}
+
+<div class="container">
+    {% if events %}
+        <h2>{% trans 'Events' %}</h2>
+        {% for s in events %}
+            <p><a href="{% url 'geoevent:update_event' s.id %}">{{ s }}</a></p>
+        {% endfor %}
+    {% endif %}
+</div> <!-- container -->
+{% endblock %}
+
